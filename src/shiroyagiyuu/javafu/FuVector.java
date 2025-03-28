@@ -21,5 +21,12 @@ public class FuVector extends FuList
 		return sb.toString();
 	}
 
+	public static FuVector create(Object... o) {
+		FuVector fuvec = new FuVector();
+		fuvec.addAll(o);
+
+		return fuvec;
+	}
+
 }
 

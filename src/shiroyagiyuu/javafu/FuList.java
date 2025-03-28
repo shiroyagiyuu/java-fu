@@ -22,6 +22,27 @@ public class FuList implements FuObject
 		l.add(new FuInteger(i));
 	}
 
+	public void addAll(Object[] objs)
+	{
+		int  len = objs.length;
+		for (int i=0; i<len; i++)
+		{
+			Object    obj = objs[i];
+
+			if (obj instanceof Integer) {
+				int  val = (int)obj;
+				l.add( new FuInteger(val) );
+			} else if (obj instanceof String) {
+				String val = (String)obj;
+				l.add( new FuString(val) );
+			} else if (obj instanceof FuObject) {
+				FuObject  val = (FuObject)obj;
+				l.add( val );
+			}
+		}
+	}
+
+
 	public FuObject get(int i) {
 		return l.get(i);
 	}
@@ -61,5 +82,11 @@ public class FuList implements FuObject
 		return sb.toString();
 	}
 
+	public static FuList create(Object... o) {
+		FuList  l = new FuList();
+		l.addAll(o);
+
+		return l;
+	}
 }
 

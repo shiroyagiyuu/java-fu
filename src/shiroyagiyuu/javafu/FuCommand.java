@@ -25,5 +25,11 @@ public class FuCommand extends FuList
 		return sb.toString();
 	}
 
+	public static FuCommand create(String com, Object... args) {
+		FuCommand  fucom = new FuCommand(com);
+		fucom.addAll(args);
+
+		return fucom;
+	}
 }
 
