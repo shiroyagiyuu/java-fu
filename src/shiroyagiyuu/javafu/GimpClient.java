@@ -105,7 +105,7 @@ public class GimpClient
 	}
 
 	public FuList call(String cmd, Object... args) throws IOException {
-		return runmsg(FuUtils.createCmd(cmd, args));
+		return runmsg(FuCommand.create(cmd, args));
 	}
 
 	public void close() {
