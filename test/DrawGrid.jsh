@@ -11,7 +11,7 @@ System.out.println("Script="+ res.getScript());
 System.out.println("obj=" + res);
 System.out.println("value="+res.get(0));
 
-res = cli.call("gimp-brushes-get-list", 0);
+res = cli.call("gimp-brushes-get-list", "");
 System.out.println("Script="+res.getScript());
 
 /*
