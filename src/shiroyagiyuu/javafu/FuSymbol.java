@@ -1,10 +1,10 @@
 package shiroyagiyuu.javafu;
 
-public class FuString implements FuObject
+public class FuSymbol implements FuObject
 {
 	String  value;
 
-	public FuString(String s) {
+	public FuSymbol(String s) {
 		this.value = s;
 	}
 
@@ -17,6 +17,6 @@ public class FuString implements FuObject
 	}
 
 	public String getScript() {
-		return "\"" + this.value + "\"";
+		return this.value;
 	}
 }

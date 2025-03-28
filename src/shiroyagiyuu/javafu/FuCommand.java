@@ -4,11 +4,8 @@ import java.util.*;
 
 public class FuCommand extends FuList
 {
-	public FuCommand() {
-	}
-
 	public FuCommand(String cmd) {
-		add(new FuString(cmd));
+		add(new FuSymbol(cmd));
 	}
 
 	public String getScript() {

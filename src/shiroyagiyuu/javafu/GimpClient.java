@@ -12,6 +12,8 @@ public class GimpClient
 	OutputStream	out_st;
 	InputStream	in_st;
 
+	int  result;
+
 	public GimpClient(String host, int port)
 	{
 		this.host = host;
@@ -59,6 +61,9 @@ public class GimpClient
 
 		System.out.println("hdrlen=" + (off+l) + ",hdr=" + hdr[0]);
 
+		result = hdr[1];
+		System.out.println("result=" + result + ": " + ((result==0)?"OK":"Error"));
+
 		int     len = hdr[2]*256 + hdr[3];
 		System.out.println("len=" + len);
 		byte[]  buf = new byte[len];
@@ -80,14 +85,21 @@ public class GimpClient
 	}
 
 	public FuList runmsg(FuCommand msg) throws IOException {
+		result = 0;
 		send(msg.getScript());
 		String    res = recv();
-		FuObject  obj = FuParser.parseList(res);
 
-		if (obj instanceof FuList) {
-			return (FuList)obj;
+		if (result==0) {
+			FuObject  obj = FuParser.parseList(res);
+
+			if (obj instanceof FuList) {
+				return (FuList)obj;
+			} else {
+				System.out.println("Unknown Result: "+res);
+				return null;
+			}
 		} else {
-			System.out.println("Unknown Result: "+res);
+			System.out.println("Error Return: " + res);
 			return null;
 		}
 	}
