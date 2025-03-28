@@ -6,9 +6,10 @@ public class FuParser
 	int	n;
 
 	final int TK_NONE=0;
-	final int TK_STRING=1;
+	final int TK_SYMBOL=1;
 	final int TK_INTEGER=2;
 	final int TK_FLOAT=3;
+	final int TK_STRING=4;
 
 	public FuParser(String str) {
 		this.str = str;
@@ -21,7 +22,7 @@ public class FuParser
 		if (tktype == TK_INTEGER) {
 			int  n = Integer.parseInt(tk.toString());
 			return new FuInteger(n);
-		} else if (tktype == TK_STRING) {
+		} else if (tktype == TK_SYMBOL) {
 			return new FuString(tk.toString());
 		} else {
 			System.out.println("unknown type=" + tktype);
@@ -48,9 +49,11 @@ public class FuParser
 			n++;
 			switch(c) {
 			case ' ':
-				l.add(createToken(tk, tktype));
-				tk = new StringBuilder();
-				tktype = TK_NONE;
+				if (tktype != TK_NONE) {
+					l.add(createToken(tk, tktype));
+					tk = new StringBuilder();
+					tktype = TK_NONE;
+				}
 				break;
 			case '#':
 				c = str.charAt(n);
@@ -65,9 +68,9 @@ public class FuParser
 			case '\'':
 				c = str.charAt(n);
 				if (c=='(') {
-					l.add(parse(new FuCommand()));
+					l.add(parse(new FuList()));
 				} else {
-					System.out.println("unknown command??");
+					System.out.println("unknown list??");
 				}
 				break;
 			case '(':
@@ -79,10 +82,25 @@ public class FuParser
 					l.add(createToken(tk, tktype));
 				}
 				return l;
+			case '"':
+				c = str.charAt(n);
+				while (c!='"') {
+					tk.append(c);
+					n++;
+					c = str.charAt(n);
+				}
+				l.add(new FuString(tk.toString()));
+				tk = new StringBuilder();
+				n++;
+				tktype = TK_NONE;
+				if (str.charAt(n)==' ') {
+					n++;
+				}
+				break;
 			default:
 				tk.append(c);
 				if (c<'0' || '9'<c) {
-					tktype = TK_STRING;
+					tktype = TK_SYMBOL;
 				} else if (tktype==TK_INTEGER && c=='.') {
 					tktype = TK_FLOAT;
 				} else {
