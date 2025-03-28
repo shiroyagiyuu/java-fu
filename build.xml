@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="java-fu" default="compile" basedir=".">
+
+	<property name="dir.classes" value="classes"/>
+	<property name="dir.source"  value="src"/>
+
+	<target name="makeJar" description="jar">
+		<antcall target="clean"/>
+		<antcall target="compile"/>
+
+		<jar basedir="classes" destfile="java-fu.jar"/>
+	</target>
+
+	<target name="compile" description="compile">
+		<mkdir dir="${dir.classes}"/>
+		<javac 
+		srcdir="${dir.source}"
+		destdir="${dir.classes}"
+		includeAntRuntime="false"
+		debug="true" />
+	</target>
+
+
+	<target name="clean" description="clean">
+		<delete dir="${dir.classes}"/>
+	</target>
+</project>
