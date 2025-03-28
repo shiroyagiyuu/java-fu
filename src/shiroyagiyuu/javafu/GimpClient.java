@@ -25,6 +25,10 @@ public class GimpClient
 	}
 
 	public void open() throws IOException {
+		if (soc != null) {
+			close();
+		}
+
 		soc = new Socket(host, port);
 
 		out_st = soc.getOutputStream();
@@ -105,17 +109,41 @@ public class GimpClient
 	}
 
 	public FuList call(String cmd, Object... args) throws IOException {
+		if (soc==null) {
+			open();
+		}
 		return runmsg(FuCommand.create(cmd, args));
 	}
 
 	public void close() {
-		try {
-			out_st.close();
-			in_st.close();
-			soc.close();
+		if (out_st != null) {
+			try {
+				out_st.close();
+				out_st = null;
+			}
+			catch(IOException ex) {
+				ex.printStackTrace();
+			}
 		}
-		catch(IOException ex) {
-			ex.printStackTrace();
+
+		if (in_st != null) {
+			try {
+				in_st.close();
+				in_st = null;
+			}
+			catch(IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		if (soc != null) {
+			try {
+				soc.close();
+				soc = null;
+			}
+			catch(IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 

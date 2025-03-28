@@ -3,8 +3,6 @@ FuList		res;
 
 GimpClient  cli = new GimpClient();
 
-cli.open();
-
 //res = cli.call("gimp-image-new", 512, 512, "RGB");
 res = cli.call("gimp-image-list");
 System.out.println("Script="+ res.getScript());
@@ -18,5 +16,4 @@ System.out.println("Script="+res.getScript());
 res = cli.call("gimp-display-new", res.get(0));
 System.out.println("Script="+res.getScript());
 */
-cli.close();
 
